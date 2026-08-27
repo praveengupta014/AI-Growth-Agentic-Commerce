@@ -3,4 +3,4 @@ Allow: /
 Disallow: /audit
 Disallow: /orders
 
-Sitemap: https://your-vercel-domain.vercel.app/sitemap.xml
+Sitemap: https://ai-growth-agentic-commercee.vercel.app/sitemap.xml

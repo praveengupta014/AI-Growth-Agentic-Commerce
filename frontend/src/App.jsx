@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
-import { ShoppingCart, User, Bot, Activity, Menu, X, Trash2, ArrowRight, Loader2 } from 'lucide-react';
+import { ShoppingCart, User, Bot, Activity, Menu, X, Trash2, ArrowRight, Loader2, ChevronDown, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -33,6 +33,7 @@ function App() {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [checkoutStep, setCheckoutStep] = useState('cart'); // 'cart' | 'address'
   const [shippingAddress, setShippingAddress] = useState({ street: '', city: '', postalCode: '' });
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   
   const [cart, setCart] = useState(() => {
     const saved = localStorage.getItem('cart');
@@ -193,13 +194,46 @@ function App() {
                 <div className="h-6 w-px bg-white/10 mx-2"></div>
                 
                 {user ? (
-                  <div className="flex items-center gap-4">
-                    <span className="text-xs font-medium text-indigo-300">
-                      {user.name || 'User'}
-                    </span>
-                    <button onClick={handleLogout} className="text-xs hover:text-rose-400 transition-colors duration-200">
-                      Logout
+                  <div className="relative">
+                    <button 
+                      onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                      onBlur={() => setTimeout(() => setIsProfileDropdownOpen(false), 200)}
+                      className="flex items-center gap-2 hover:bg-white/5 px-2 py-1.5 rounded-lg transition-colors group"
+                    >
+                      <div className="w-7 h-7 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-300 font-bold text-xs border border-indigo-500/50">
+                        {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                      </div>
+                      <span className="text-sm font-medium text-gray-200">
+                        {user.name || 'User'}
+                      </span>
+                      <ChevronDown size={14} className={`text-gray-400 transition-transform ${isProfileDropdownOpen ? 'rotate-180' : ''}`} />
                     </button>
+                    
+                    <AnimatePresence>
+                      {isProfileDropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute right-0 mt-2 w-48 bg-neutral-900 border border-white/10 rounded-xl shadow-xl overflow-hidden z-50"
+                        >
+                          <div className="px-4 py-3 border-b border-white/10">
+                            <p className="text-sm font-medium text-white truncate">{user.name || 'User'}</p>
+                            <p className="text-xs text-gray-400 truncate mt-0.5">{user.email || ''}</p>
+                          </div>
+                          <div className="p-2">
+                            <button 
+                              onClick={handleLogout} 
+                              className="w-full text-left px-3 py-2 text-sm text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 rounded-lg transition-colors flex items-center gap-2"
+                            >
+                              <LogOut size={14} />
+                              Logout
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 ) : (
                   <Link to="/login" className="hover:text-white transition-colors duration-200">
@@ -267,11 +301,16 @@ function App() {
                 <div className="h-px w-full bg-white/10 my-2"></div>
                 
                 {user ? (
-                  <div className="flex items-center justify-between p-2">
-                    <span className="text-sm font-medium text-indigo-300">
-                      Hi, {user.name || 'User'}
-                    </span>
-                    <button onClick={handleLogout} className="text-sm hover:text-rose-400 transition-colors duration-200">
+                  <div className="mt-2 bg-white/5 rounded-xl border border-white/10 overflow-hidden">
+                    <div className="px-4 py-3 border-b border-white/10">
+                      <p className="text-sm font-medium text-white truncate">Hi, {user.name || 'User'}</p>
+                      <p className="text-xs text-gray-400 truncate mt-0.5">{user.email || ''}</p>
+                    </div>
+                    <button 
+                      onClick={handleLogout} 
+                      className="w-full px-4 py-3 text-sm text-rose-400 hover:bg-rose-500/10 transition-colors flex items-center gap-2"
+                    >
+                      <LogOut size={16} />
                       Logout
                     </button>
                   </div>

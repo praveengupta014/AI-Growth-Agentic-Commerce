@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /audit
+Disallow: /orders
+
+Sitemap: https://your-vercel-domain.vercel.app/sitemap.xml

@@ -21,7 +21,7 @@ const Login = () => {
 
     try {
       if (isVerifying) {
-        const res = await fetch(`\${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/verify-otp`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/verify-otp`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, otp })
@@ -32,7 +32,7 @@ const Login = () => {
         alert('Verification successful! You are now logged in.');
         window.location.href = '/';
       } else if (isLogin) {
-        const res = await fetch(`\${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/login`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
@@ -43,7 +43,7 @@ const Login = () => {
         alert('Login successful!');
         window.location.href = '/';
       } else {
-        const res = await fetch(`\${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/register`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, password })
@@ -198,7 +198,7 @@ const Login = () => {
               onSuccess={async (credentialResponse) => {
                 try {
                   setIsLoading(true);
-                  const res = await fetch(`\${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/google`, {
+                  const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/google`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ idToken: credentialResponse.credential })

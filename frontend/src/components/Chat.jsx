@@ -26,7 +26,7 @@ const Chat = () => {
     const apiMessages = newMessages.map(({ role, content }) => ({ role, content }));
 
     try {
-      const response = await fetch(`\${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/agent/chat`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/agent/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
